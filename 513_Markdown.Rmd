@@ -60,7 +60,21 @@ Motivation: to estimate a solution using random numbers. We can do this by using
 
 We seek to estimate the quantity $\vartheta$ by $T_N$ a function of random numbers. A key property of $T_N$ is consistency. We define consistiency by the following: for all $\epsilon \geq 0$ $P(|T_N - \epsilon |) \geq 0 \rightarrow 0$ as $N \rightarrow \infty$
 
-Intuitive Example Using $Exp(1)$ Distribution:  
+Intuitive Example Estimating Median of $Exp(1)$ Distribution:  
+
+Median of probability distribution P defined as $P((-\infty,m]) \geq 1/2$ and $P([m,\infty)) \geq 1/2$ or more commonly $P((-\infty,m]) = ([m,\infty)) = 1/2$.  In such a case we could estimate the median by $m = F^{-1}(1/2)$.  
+
+Suppose $X_i \sim Exp(1)$. 
+
+```{r}
+set.seed(420)
+median(rexp(10))
+median(rexp(100))
+median(rexp(100000))
+median(rexp(1000000))
+```
+We can see that in the estimated median is starting to converge to $m=0.6921435$. In practive this can be easily verified by taking the inverse of the exponential distribution which in fact yields $m = ln(2) = 0.6931472$.  
+
 
 
 
