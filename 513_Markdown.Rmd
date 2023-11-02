@@ -2,7 +2,10 @@
 title: "Stat513"
 author: "Jake Hoover"
 date: "2023-10-29"
-output: html_document
+output:
+  html_document:
+    toc: true
+    toc_depth: 2
 ---
 
 ```{r setup, include=FALSE}
@@ -17,7 +20,67 @@ Student: Jake Hoover
 
 ## Inverse Method 
 
-Test Text For Push
+Method: Apply a quantile function to the desired distribution to a standard uniform random variable.  
+Quantile Function: The inverse to the cumulative distribution function.  
+$$Q(u) = F^{-1}(u)$$
+Example: Using the exponentional distribution $$ f(x) = \lambda e^{- \lambda x}, F(x) = 1 - e^{-\lambda x}, x\geq 0 $$.  
+Setting $F(x) = u$ and solving for the inverse of $F$ yields $Q(u) = - log(1-u)$.  
+This method us useful when its available but it is usually the case where the inverse function does not have a closed form solution such as when $f(x) \sim Normal(\mu,\sigma^2)$.  
+
+Example $Normal(1,4)$
+```{r}
+set.seed(007)
+y <- 1+2*qnorm(runif(1000))
+set.seed(007)
+r <- rnorm(1000, 1, 2)
+qqplot(y,r)
+abline(0,1)
+```
+Notice that the plotted values generated in two ways are nearly the same so our method works fairly well.  
+A short proof of why it works: We can calculate the c.d.f $F_{Q(U)}$ of $Q(U) = F^{-1}(U)$, and if they are the same then we have the desired propery. W.l.o.g. we assume that $F$ is strictly increasing then we have the following:  
+$$F_{Q(U)}(x) = P(Q(U) \leq x) = P(F^{-1}(U) \leq x) = P(U \leq F(x)) = F(x)$$
+The second last equality hold from the assumption and the last equality hold form the fact that $U$ is a $Uniform(0,1)$ random variable. 
+
+## Acceptance and Rejection Method 
+The process is as follows:  
+1. Generate $U$ from a $Uniform(a,b)$ and $V$ from $Uniform(0,c)$.  
+2. If $f(U) \geq V$ take $X=U$.  
+3. Else repeat.  
+
+A simple proof: Let the density of accepted $U$ be $h(x)$. We would like to show that it is actually $f(x)$, the density we would like the random numbers to take.  
+$$h(x) = g_{U}(x) = \frac{f_U(x) P(U=x, V \leq f(U))}{\int f_U(z) P(U = z, V \leq f(U))dx} = \frac{f_U(x) P(V \leq f(x)}{\int f_U(z) P(V \leq f(z) dz} = \frac{\frac{1}{b-a}f(x) \frac{1}{c}}{\int \frac{1}{b-a}f(z) \frac{1}{c}dz} = f(x)$$
+
+## Transformation Methods 
+When the desired distribution of a transformation of known distributions and the transformation is reasonable this can be a reasonable implementation to achieve the desired effect.  
+Example Box-Mueller Approach.  
+In this approach we assume $X_1, X_2$ are $Uniform(0,1)$ random variables. Using hte transformation $Y_1 = cos(2\pi X_2)\sqrt {-2 ln(X_1)}$ and $Y_2 = sin(2\pi X_2)\sqrt {-2 ln(X_1)}$. By using principles of joint distribution functions and transformation to polar coordinates it can be shown that $Y_1$ and $Y_2$ are independent Normal random variables.  
+
+## Monte Carlo Introduction 
+Motivation: to estimate a solution using random numbers. We can do this by using a computer to repeatedly generate a solution. We can then create a probability estimate using the relative frequency of the solution. Monte Carlo estimates probabilistic quantities by their estimates based on repetitive evaluation of computer random numbers relative to the problem.  
+
+We seek to estimate the quantity $\vartheta$ by $T_N$ a function of random numbers. A key property of $T_N$ is consistency. We define consistiency by the following: for all $\epsilon \geq 0$ $P(|T_N - \epsilon |) \geq 0 \rightarrow 0$ as $N \rightarrow \infty$
+
+Intuitive Example Using $Exp(1)$ Distribution:  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
